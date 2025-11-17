@@ -2,9 +2,6 @@ package mx.unam.ciencias.myp.butchery.model.patrones.factory;
 
 /**
  * Interfaz que representa un producto en la carnicería.
- * Define los métodos mínimos indicados en el diagrama:
- * - getName()
- * - calculatePrice(quantity)
  * @author Cesar
  */
 public interface Product {
