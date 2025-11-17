@@ -1,4 +1,4 @@
-package main.java.mx.unam.ciencias.myp.butchery.controller;
+package mx.unam.ciencias.myp.butchery.controller;
 
 public class ButcheryController {
     
