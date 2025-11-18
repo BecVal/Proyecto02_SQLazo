@@ -72,4 +72,23 @@ public class ProductByUnit implements Product {
     public String toString() {
         return String.format("ProductByUnit{id='%s', name='%s', pricePerUnit=%.2f}", id, name, pricePerUnit);
     }
+
+    /**
+     * Dos productos son iguales si tienen el mismo ID.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductByUnit that = (ProductByUnit) o;
+        return id != null && id.equals(that.id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return id == null ? 0 : id.hashCode();
+    }
 }

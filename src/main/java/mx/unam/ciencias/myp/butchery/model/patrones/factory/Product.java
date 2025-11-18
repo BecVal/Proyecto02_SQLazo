@@ -14,6 +14,12 @@ public interface Product {
     String getName();
 
     /**
+     * Identificador único del producto.
+     * @return id
+     */
+    String getId();
+
+    /**
      * Calcula el precio para una cantidad dada.
      * Para productos por peso la cantidad es en kilogramos,
      * para productos por unidad la cantidad es en piezas.

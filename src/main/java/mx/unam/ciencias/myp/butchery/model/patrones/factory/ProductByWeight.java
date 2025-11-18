@@ -71,4 +71,23 @@ public class ProductByWeight implements Product {
     public String toString() {
         return String.format("ProductByWeight{id='%s', name='%s', pricePerKg=%.2f}", id, name, pricePerKg);
     }
+
+    /**
+     * Dos productos son iguales si tienen el mismo ID.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductByWeight that = (ProductByWeight) o;
+        return id != null && id.equals(that.id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return id == null ? 0 : id.hashCode();
+    }
 }
