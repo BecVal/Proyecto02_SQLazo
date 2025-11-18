@@ -40,7 +40,7 @@ public class PendingState implements ISaleState {
         double newTotal = sale.getStrategy().applyDiscount(total);
 
         sale.setTotal(newTotal);
-        System.out.println("Descuento aplicado.");
+        System.out.println("\nDiscount applied.");
     }
 
     /**
@@ -52,7 +52,7 @@ public class PendingState implements ISaleState {
     public void finalizeSale(Sale sale) {
 
         sale.setState(new PaidState());
-        System.out.println("Venta finalizada.");
+        System.out.println("\nSale completed.");
 
     }
 
@@ -66,7 +66,7 @@ public class PendingState implements ISaleState {
 
     public void cancelSale(Sale sale) {
         sale.setState(new CanceledState());
-        System.out.println("Venta cancelada.");
+        System.out.println("\nCanceling...");
 
     }
 }

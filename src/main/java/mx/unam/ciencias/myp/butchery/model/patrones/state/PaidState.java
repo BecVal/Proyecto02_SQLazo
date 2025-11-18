@@ -16,7 +16,7 @@ public class PaidState implements ISaleState {
      */
     private void reject() {
 
-        System.out.println("Operación no permitida: la venta ya está pagada.");
+        System.out.println("\nIt is not possible.");
     }
 
     /**

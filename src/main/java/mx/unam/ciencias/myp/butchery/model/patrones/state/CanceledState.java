@@ -16,7 +16,7 @@ public class CanceledState implements ISaleState {
      * Muestra un mensaje indicando que la operación no está permitida debido a que la venta se encuentra cancelada.
      */
     private void reject() {
-        System.out.println("Operación no permitida: la venta fue cancelada.");
+        System.out.println("\nIt is not possible.");
     }
 
     /**
@@ -46,7 +46,6 @@ public class CanceledState implements ISaleState {
 
         reject();
     }
-
 
     /**
      * Intento de cancelar nuevamente una venta ya cancelada.
