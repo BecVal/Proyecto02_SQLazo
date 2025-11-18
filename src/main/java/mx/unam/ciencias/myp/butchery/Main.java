@@ -6,6 +6,8 @@ import mx.unam.ciencias.myp.butchery.model.ModelFacade;
 
 public class Main {
     public static void main(String[] args) {
+        AppInitializer.init();
+
         ModelFacade model = new ModelFacade();
         ButcheryController controller = new ButcheryController(model);
         ConsoleView consoleView = new ConsoleView(controller);

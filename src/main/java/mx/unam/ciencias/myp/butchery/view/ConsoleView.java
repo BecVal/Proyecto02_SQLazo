@@ -221,12 +221,10 @@ public class ConsoleView {
                 case 1:
                     String newName = readLine("New name:");
                     controller.updateProductName(selProduct.getName(), newName);
-                    System.out.println("Product renamed to: " + newName);
                     break;
                 case 2:
                     double newPrice = readDouble("New price:");
                     controller.updateProductPrice(selProduct.getName(), newPrice);
-                    System.out.println("Product price updated.");
                     break;
                 case 3:
                     System.out.println("Cancelled.");
@@ -262,8 +260,7 @@ public class ConsoleView {
 
         int sel = readInt("Select product number to delete:") - 1;
         boolean removed = controller.removeProductByIndex(sel);
-        if (removed) System.out.println("Product deleted.");
-        else System.out.println("Invalid selection or deletion failed.");
+        if (!removed) System.out.println("Invalid selection or deletion failed.");
     }
 
     /**
@@ -505,9 +502,6 @@ public class ConsoleView {
 
         String id = java.util.UUID.randomUUID().toString();
         controller.registerProductByUnit(id, name, pricePerUnit);
-        System.out.println("Product registered: " + name + " | Price per unit: " + pricePerUnit);
-        System.out.println("Assigned ID: " + id);
-        System.out.println("Product registered by unit successfully.");
     }
 
     /**
@@ -523,9 +517,6 @@ public class ConsoleView {
 
         String id = java.util.UUID.randomUUID().toString();
         controller.registerProductByWeight(id, name, pricePerKg);
-        System.out.println("Product registered: " + name + " | Price per kg: " + pricePerKg);
-        System.out.println("Assigned ID: " + id);
-        System.out.println("Product registered by weight successfully.");
     }
 
     /**

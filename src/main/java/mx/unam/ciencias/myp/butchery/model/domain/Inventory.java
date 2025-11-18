@@ -64,9 +64,9 @@ public class Inventory {
         stock.put(product, stock.getOrDefault(product, 0.0) + quantity);
 
         notifyObservers(
-            "Se agregó al inventario: " + product.getName() +
-            " | Cantidad: " + quantity +
-            " | Total actual: " + stock.get(product)
+            "Added to inventory: " + product.getName() +
+            " | Quantity: " + quantity +
+            " | Current total: " + stock.get(product)
         );
     }
 
@@ -86,9 +86,9 @@ public class Inventory {
         stock.put(product, stock.getOrDefault(product, 0.0) + quantity);
 
         notifyObservers(
-            "Se agregó al inventario: " + product.getName() +
-            " | Cantidad (kg): " + quantity +
-            " | Total actual (kg): " + stock.get(product)
+            "Added to inventory: " + product.getName() +
+            " | Quantity (kg): " + quantity +
+            " | Current total (kg): " + stock.get(product)
         );
     }
 
@@ -108,6 +108,7 @@ public class Inventory {
         ProductFactory factory = new ProductFactory();
         Product product = factory.createProduct(id, ProductFactory.ProductType.BY_UNIT, name, pricePerUnit);
         stock.putIfAbsent(product, 0.0);
+        notifyObservers("Product added: " + name + " | Price per unit: " + pricePerUnit);
     }
 
     /**
@@ -126,6 +127,7 @@ public class Inventory {
         ProductFactory factory = new ProductFactory();
         Product product = factory.createProduct(id, ProductFactory.ProductType.BY_WEIGHT, name, pricePerKg);
         stock.putIfAbsent(product, 0.0);
+        notifyObservers("Product added: " + name + " | Price per kg: " + pricePerKg);
     }
 
     /**
@@ -191,6 +193,7 @@ public class Inventory {
             newProduct = factory.createProduct(existing.getId(), ProductFactory.ProductType.BY_WEIGHT, newName, price);
         }
         stock.put(newProduct, qty);
+        notifyObservers("Product renamed: " + currentName + " -> " + newName);
     }
 
     /**
@@ -215,6 +218,7 @@ public class Inventory {
             newProduct = factory.createProduct(existing.getId(), ProductFactory.ProductType.BY_WEIGHT, existing.getName(), newPrice);
         }
         stock.put(newProduct, qty);
+        notifyObservers("Product price updated: " + name + " | New price: " + newPrice);
     }
 
     /**
@@ -228,7 +232,7 @@ public class Inventory {
         if (existing == null)
             return false;
         stock.remove(existing);
-        notifyObservers("Producto eliminado del inventario: " + name);
+        notifyObservers("Product removed: " + name);
         return true;
     }
 
@@ -249,16 +253,16 @@ public class Inventory {
 
         if (current < quantity) {
             throw new IllegalStateException(
-                "No hay suficiente stock de " + product.getName()
+                "There is not enough stock of: " + product.getName()
             );
         }
 
         stock.put(product, current - quantity);
 
         notifyObservers(
-            "Se redujo stock: " + product.getName() +
-            " | Cantidad retirada: " + quantity +
-            " | Restante: " + stock.get(product)
+            "Stock reduced: " + product.getName() +
+            " | Amount withdrawn: " + quantity +
+            " | Remaining: " + stock.get(product)
         );
     }
 
