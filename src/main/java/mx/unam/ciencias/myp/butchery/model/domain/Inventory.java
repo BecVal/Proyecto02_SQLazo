@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import mx.unam.ciencias.myp.butchery.model.patrones.observer.Observer;
-import mx.unam.ciencias.myp.butchery.model.patrones.factory.Product;
+import mx.unam.ciencias.myp.butchery.model.patrones.factory.*;
 
 /**
  * Gestiona el inventario de productos de la carnicería utilizando el patrón Singleton
@@ -56,7 +56,7 @@ public class Inventory {
      * @param quantity La cantidad a agregar (en kg o unidades). Debe ser un valor positivo.
      * @throws IllegalArgumentException si la cantidad es menor o igual a cero.
      */
-    public void addStock(Product product, Double quantity) {
+    public void addStockByUnit(Product product, Double quantity) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be > 0");
         }
@@ -68,6 +68,168 @@ public class Inventory {
             " | Cantidad: " + quantity +
             " | Total actual: " + stock.get(product)
         );
+    }
+
+    /**
+     * Agrega una cantidad de un producto vendido por peso al inventario.
+     * Si el producto ya existe, actualiza su cantidad. Si no, lo añade.
+     *
+     * @param product El producto a agregar o actualizar.
+     * @param quantity La cantidad a agregar en kilogramos. Debe ser un valor positivo.
+     * @throws IllegalArgumentException si la cantidad es menor o igual a cero.
+     */
+    public void addStockByWeight(Product product, Double quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be > 0");
+        }
+
+        stock.put(product, stock.getOrDefault(product, 0.0) + quantity);
+
+        notifyObservers(
+            "Se agregó al inventario: " + product.getName() +
+            " | Cantidad (kg): " + quantity +
+            " | Total actual (kg): " + stock.get(product)
+        );
+    }
+
+    /**
+     * Agrega un nuevo producto que se vende por unidad al inventario.
+     *
+     * @param id         El identificador único del producto.
+     * @param name       El nombre del producto.
+     * @param pricePerUnit El precio por unidad del producto.
+     * @throws IllegalArgumentException si ya existe un producto con el mismo nombre.
+     */
+    public void addProductByUnit(String id, String name, double pricePerUnit) {
+        for (Product p : stock.keySet()) {
+            if (p.getName().equalsIgnoreCase(name))
+                throw new IllegalArgumentException("Product with same name already exists: " + name);
+        }
+        ProductFactory factory = new ProductFactory();
+        Product product = factory.createProduct(id, ProductFactory.ProductType.BY_UNIT, name, pricePerUnit);
+        stock.putIfAbsent(product, 0.0);
+    }
+
+    /**
+     * Agrega un nuevo producto que se vende por peso al inventario.
+     *
+     * @param id         El identificador único del producto.
+     * @param name       El nombre del producto.
+     * @param pricePerKg El precio por kilogramo del producto.
+     * @throws IllegalArgumentException si ya existe un producto con el mismo nombre.
+     */
+    public void addProductByWeight(String id, String name, double pricePerKg) {
+        for (Product p : stock.keySet()) {
+            if (p.getName().equalsIgnoreCase(name))
+                throw new IllegalArgumentException("Product with same name already exists: " + name);
+        }
+        ProductFactory factory = new ProductFactory();
+        Product product = factory.createProduct(id, ProductFactory.ProductType.BY_WEIGHT, name, pricePerKg);
+        stock.putIfAbsent(product, 0.0);
+    }
+
+    /**
+     * Obtiene un producto del inventario por su nombre.
+     *
+     * @param name El nombre del producto a buscar.
+     * @return El producto encontrado, o {@code null} si no existe.
+     */
+    public Product getProductByName(String name) {
+        for (Product p : stock.keySet()) {
+            if (p.getName().equalsIgnoreCase(name))
+                return p;
+        }
+        return null;
+    }
+
+    /**
+     * Agrega stock a un producto identificado por su nombre.
+     *
+     * @param name     El nombre del producto al que se le agregará stock.
+     * @param quantity La cantidad a agregar (en kg o unidades). Debe ser un valor positivo.
+     * @throws IllegalArgumentException si el producto no se encuentra o si la cantidad es menor o igual a cero.
+     */
+    public void addStockByProductName(String name, Double quantity) {
+        Product p = getProductByName(name);
+        if (p == null)
+            throw new IllegalArgumentException("Product not found: " + name);
+        if (p instanceof ProductByUnit) {
+            addStockByUnit(p, quantity);
+        } else if (p instanceof ProductByWeight) {
+            addStockByWeight(p, quantity);
+        } else {
+            throw new IllegalStateException("Unknown product type");
+        }
+    }
+
+    /**
+     * Actualiza el nombre de un producto en el inventario.
+     *
+     * @param currentName El nombre actual del producto.
+     * @param newName     El nuevo nombre que se asignará al producto.
+     * @throws IllegalArgumentException si no se encuentra el producto con el nombre actual
+     *                                  o si ya existe otro producto con el nuevo nombre.
+     */
+    public void updateProductName(String currentName, String newName) {
+        Product existing = getProductByName(currentName);
+        if (existing == null)
+            throw new IllegalArgumentException("Product not found: " + currentName);
+        Product conflict = getProductByName(newName);
+        if (conflict != null)
+            throw new IllegalArgumentException("Another product already has the name: " + newName);
+
+        double qty = stock.getOrDefault(existing, 0.0);
+        stock.remove(existing);
+
+        ProductFactory factory = new ProductFactory();
+        Product newProduct;
+        if (existing instanceof ProductByUnit) {
+            double price = ((ProductByUnit) existing).getPricePerUnit();
+            newProduct = factory.createProduct(existing.getId(), ProductFactory.ProductType.BY_UNIT, newName, price);
+        } else {
+            double price = ((ProductByWeight) existing).getPricePerKg();
+            newProduct = factory.createProduct(existing.getId(), ProductFactory.ProductType.BY_WEIGHT, newName, price);
+        }
+        stock.put(newProduct, qty);
+    }
+
+    /**
+     * Actualiza el precio de un producto en el inventario.
+     *
+     * @param name     El nombre del producto cuyo precio se actualizará.
+     * @param newPrice El nuevo precio que se asignará al producto.
+     * @throws IllegalArgumentException si no se encuentra el producto con el nombre dado.
+     */
+    public void updateProductPrice(String name, double newPrice) {
+        Product existing = getProductByName(name);
+        if (existing == null)
+            throw new IllegalArgumentException("Product not found: " + name);
+        double qty = stock.getOrDefault(existing, 0.0);
+        stock.remove(existing);
+
+        ProductFactory factory = new ProductFactory();
+        Product newProduct;
+        if (existing instanceof ProductByUnit) {
+            newProduct = factory.createProduct(existing.getId(), ProductFactory.ProductType.BY_UNIT, existing.getName(), newPrice);
+        } else {
+            newProduct = factory.createProduct(existing.getId(), ProductFactory.ProductType.BY_WEIGHT, existing.getName(), newPrice);
+        }
+        stock.put(newProduct, qty);
+    }
+
+    /**
+     * Elimina un producto del inventario por su nombre.
+     *
+     * @param name El nombre del producto a eliminar.
+     * @return {@code true} si el producto fue eliminado, {@code false} si no se encontró.
+     */
+    public boolean removeProductByName(String name) {
+        Product existing = getProductByName(name);
+        if (existing == null)
+            return false;
+        stock.remove(existing);
+        notifyObservers("Producto eliminado del inventario: " + name);
+        return true;
     }
 
     /**
@@ -118,6 +280,21 @@ public class Inventory {
      */
     public Map<Product, Double> getInventory() {
         return Collections.unmodifiableMap(stock);
+    }
+
+    public List<Product> getProducts() {
+        return new ArrayList<>(stock.keySet());
+    }
+
+    /**
+     * Devuelve una lista de productos ordenados alfabéticamente por su nombre.
+     *
+     * @return Una lista ordenada de productos.
+     */
+    public List<Product> getProductsSortedByName() {
+        List<Product> list = getProducts();
+        list.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+        return list;
     }
 
     /**
