@@ -4,13 +4,30 @@ import mx.unam.ciencias.myp.butchery.model.ModelFacade;
 import mx.unam.ciencias.myp.butchery.model.domain.Sale;
 import mx.unam.ciencias.myp.butchery.model.patrones.factory.Product;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ButcheryControllerTest {
+
+    private static final PrintStream REAL_OUT = System.out;
+
+    @BeforeEach
+    public void silenceOutput() {
+        System.setOut(new PrintStream(new ByteArrayOutputStream()));
+    }
+
+    @AfterEach
+    public void restoreOutput() {
+        System.setOut(REAL_OUT);
+    }
+
 
     static class ProductStub implements Product {
 
