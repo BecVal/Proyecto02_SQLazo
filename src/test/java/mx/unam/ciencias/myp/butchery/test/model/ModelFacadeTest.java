@@ -1,7 +1,7 @@
 package mx.unam.ciencias.myp.butchery.test.model;
+import mx.unam.ciencias.myp.butchery.DatabaseManager;
 import mx.unam.ciencias.myp.butchery.model.ModelFacade;
 
-import mx.unam.ciencias.myp.butchery.model.domain.Inventory;
 import mx.unam.ciencias.myp.butchery.model.domain.Sale;
 import mx.unam.ciencias.myp.butchery.model.patrones.factory.*;
 import mx.unam.ciencias.myp.butchery.model.patrones.state.PaidState;
@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.Field;
 
 public class ModelFacadeTest {
 
@@ -29,10 +28,29 @@ public class ModelFacadeTest {
 
     @BeforeEach
     public void resetSingleton() throws Exception {
-        Field instance = Inventory.class.getDeclaredField("instance");
-        instance.setAccessible(true);
-        instance.set(null, null);
+        var field = Class.forName("mx.unam.ciencias.myp.butchery.model.domain.Inventory")
+                        .getDeclaredField("instance");
+        field.setAccessible(true);
+        field.set(null, null);
     }
+
+    @BeforeEach
+    public void cleanDB() throws Exception {
+        try (var conn = DatabaseManager.getConnection();
+            var stmt = conn.createStatement()) {
+            stmt.execute("DELETE FROM inventory;");
+        }
+    }
+
+    @AfterEach
+    public void clean() throws Exception {
+        try (var conn = DatabaseManager.getConnection();
+            var stmt = conn.createStatement()) {
+            stmt.execute("DELETE FROM inventory;");
+        }
+    }
+
+
 
     @Test
     public void testAddAndFindProduct() {

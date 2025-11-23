@@ -13,6 +13,7 @@ mx/unam/ciencias/myp/butchery/model/patrones/observer/Subject.class
 mx/unam/ciencias/myp/butchery/model/domain/Sale.class
 mx/unam/ciencias/myp/butchery/model/patrones/factory/ProductFactory$ProductType.class
 mx/unam/ciencias/myp/butchery/Main.class
+mx/unam/ciencias/myp/butchery/DatabaseManager.class
 mx/unam/ciencias/myp/butchery/model/domain/Inventory.class
 mx/unam/ciencias/myp/butchery/util/TeeOutputStream.class
 mx/unam/ciencias/myp/butchery/controller/ButcheryController.class
@@ -22,6 +23,7 @@ mx/unam/ciencias/myp/butchery/model/patrones/strategy/PercentageDiscount.class
 mx/unam/ciencias/myp/butchery/model/patrones/state/ISaleState.class
 mx/unam/ciencias/myp/butchery/model/patrones/factory/Product.class
 mx/unam/ciencias/myp/butchery/model/patrones/observer/Observer.class
+mx/unam/ciencias/myp/butchery/DatabaseInitializer.class
 mx/unam/ciencias/myp/butchery/model/domain/SalesHistory.class
 mx/unam/ciencias/myp/butchery/model/patrones/factory/ProductByWeight.class
 mx/unam/ciencias/myp/butchery/model/patrones/observer/ConsoleNotifier.class

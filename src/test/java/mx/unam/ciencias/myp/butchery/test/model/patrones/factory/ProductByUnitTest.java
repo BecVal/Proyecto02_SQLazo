@@ -1,11 +1,22 @@
 package mx.unam.ciencias.myp.butchery.test.model.patrones.factory;
+import mx.unam.ciencias.myp.butchery.DatabaseManager;
 import mx.unam.ciencias.myp.butchery.model.patrones.factory.ProductByUnit;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterEach;
+
 public class ProductByUnitTest {
 
+    @AfterEach
+    public void clean() throws Exception {
+        try (var conn = DatabaseManager.getConnection();
+            var stmt = conn.createStatement()) {
+            stmt.execute("DELETE FROM inventory;");
+        }
+    }
+    
     @Test
     public void testConstructorStoresValues() {
         ProductByUnit p = new ProductByUnit("A1", "Carne", 15.0);
@@ -26,7 +37,7 @@ public class ProductByUnitTest {
     public void testCalculatePrice() {
         ProductByUnit p = new ProductByUnit("B2", "Costilla", 20.0);
 
-        assertEquals(100.0, p.calculatePrice(5), 0.0001); // 20 * 5
+        assertEquals(100.0, p.calculatePrice(5), 0.0001);
     }
 
     @Test

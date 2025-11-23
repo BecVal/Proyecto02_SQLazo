@@ -1,3 +1,0 @@
-Product added: 22 | Price per kg: 22.0
-Added to inventory: 22 | Quantity (kg): 33.0 | Current total (kg): 33.0
-Stock reduced: 22 | Amount withdrawn: 2.0 | Remaining: 31.0

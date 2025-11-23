@@ -1,0 +1,17 @@
+mx/unam/ciencias/myp/butchery/test/model/patrones/observer/FileNotifierTest$FileNotifierTestHelper.class
+mx/unam/ciencias/myp/butchery/test/model/domain/SalesHistoryTest.class
+mx/unam/ciencias/myp/butchery/test/model/ModelFacadeTest.class
+mx/unam/ciencias/myp/butchery/test/model/patrones/factory/ProductByWeightTest.class
+mx/unam/ciencias/myp/butchery/test/controller/ButcheryControllerTest$ProductStub.class
+mx/unam/ciencias/myp/butchery/test/model/patrones/strategy/PercentageDiscountTest.class
+mx/unam/ciencias/myp/butchery/test/model/patrones/observer/FileNotifierTest.class
+mx/unam/ciencias/myp/butchery/test/model/domain/SaleTest$DummyState.class
+mx/unam/ciencias/myp/butchery/test/model/domain/SaleTest.class
+mx/unam/ciencias/myp/butchery/test/model/patrones/factory/ProductByUnitTest.class
+mx/unam/ciencias/myp/butchery/test/controller/ButcheryControllerTest$ModelFacadeStub.class
+mx/unam/ciencias/myp/butchery/test/model/domain/InventoryTest.class
+mx/unam/ciencias/myp/butchery/test/model/patrones/factory/ProductFactoryTest.class
+mx/unam/ciencias/myp/butchery/test/controller/ButcheryControllerTest.class
+mx/unam/ciencias/myp/butchery/test/model/patrones/state/PendingStateTest.class
+mx/unam/ciencias/myp/butchery/test/model/patrones/strategy/FrequentCustomerDiscountTest.class
+mx/unam/ciencias/myp/butchery/test/model/patrones/observer/ListNotifierTest.class

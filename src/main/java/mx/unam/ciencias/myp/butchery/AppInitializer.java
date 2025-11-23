@@ -5,7 +5,6 @@ import mx.unam.ciencias.myp.butchery.model.patrones.observer.FileNotifier;
 import mx.unam.ciencias.myp.butchery.model.patrones.observer.ConsoleNotifier;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -23,9 +22,12 @@ public final class AppInitializer {
      * y registra observadores en el `Inventory`.
      */
     public static void init() {
+
+        DatabaseInitializer.initialize();
         try {
             File f = new File(LOG_FILE);
-            try (FileOutputStream fos = new FileOutputStream(f, false)) {
+            if (!f.exists()) {
+                f.createNewFile();
             }
         } catch (IOException e) {
             System.err.println("No se pudo preparar el archivo de log: " + e.getMessage());
@@ -38,5 +40,6 @@ public final class AppInitializer {
         } catch (Exception e) {
             System.err.println("No se pudieron registrar observadores: " + e.getMessage());
         }
+        
     }
 }

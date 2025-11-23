@@ -1,11 +1,15 @@
 package mx.unam.ciencias.myp.butchery;
 
 import mx.unam.ciencias.myp.butchery.view.ConsoleView;
+
+
 import mx.unam.ciencias.myp.butchery.controller.ButcheryController;
 import mx.unam.ciencias.myp.butchery.model.ModelFacade;
 
 public class Main {
+    
     public static void main(String[] args) {
+
         AppInitializer.init();
 
         ModelFacade model = new ModelFacade();
