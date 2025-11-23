@@ -1,8 +1,4 @@
-# Compiled class file
-*.class
 
-# Log file
-*.log
 
 # BlueJ files
 *.ctxt
@@ -37,3 +33,6 @@ Icon
 
 ehthumbs.db
 Thumbs.db
+target/
+*.log
+*.class
