@@ -35,4 +35,4 @@ ehthumbs.db
 Thumbs.db
 target/
 *.log
-*.class
+*.classtarget/

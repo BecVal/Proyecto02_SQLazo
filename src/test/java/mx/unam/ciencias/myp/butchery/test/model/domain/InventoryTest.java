@@ -1,4 +1,5 @@
 package mx.unam.ciencias.myp.butchery.test.model.domain;
+import mx.unam.ciencias.myp.butchery.DatabaseManager;
 import mx.unam.ciencias.myp.butchery.model.domain.Inventory;
 import mx.unam.ciencias.myp.butchery.model.patrones.factory.Product;
 import mx.unam.ciencias.myp.butchery.model.patrones.factory.ProductByUnit;
@@ -16,6 +17,14 @@ public class InventoryTest {
     
         for (Product p : productos) {
             inv.removeProductByName(p.getName());
+        }
+    }
+    
+    @AfterEach
+    public void clean() throws Exception {
+        try (var conn = DatabaseManager.getConnection();
+            var stmt = conn.createStatement()) {
+            stmt.execute("DELETE FROM inventory;");
         }
     }
     
