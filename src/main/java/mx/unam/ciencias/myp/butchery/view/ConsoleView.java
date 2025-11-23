@@ -84,7 +84,7 @@ public class ConsoleView {
     public void manageInventory() {
         while (true) {
             System.out.println("=============================================================================================================");
-            System.out.println("Inventory:\n");
+            System.out.println("Inventory Options:\n");
             System.out.println("1. Show Inventory");
             System.out.println("2. Register new product");
             System.out.println("3. Add stock to product");
