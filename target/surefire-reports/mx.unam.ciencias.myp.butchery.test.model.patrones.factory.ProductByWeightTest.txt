@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: mx.unam.ciencias.myp.butchery.test.model.patrones.factory.ProductByWeightTest
--------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in mx.unam.ciencias.myp.butchery.test.model.patrones.factory.ProductByWeightTest
