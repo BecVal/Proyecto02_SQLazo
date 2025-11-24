@@ -84,7 +84,7 @@ docker build -t butchery .
 Este comando ejecuta un contenedor basado en la imagen que construimos en el paso anterior:
 
 ```bash
-docker run --rm -it butchery
+docker run -it -v "$(pwd)/data:/app/data" butchery
 ```
 
   * **`docker run`**: Da la instrucción a Docker de crear y ejecutar un contenedor.
