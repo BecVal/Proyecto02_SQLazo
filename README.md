@@ -11,6 +11,115 @@
 Consiste en una consola para registro de ventas, control de inventario, manejo de impuestos y cálculo de precios de una carnicería.
 Los patrones de diseño trabajados en esta práctica son: **State, Strategy, Observer, MVC, Singleton y Factory**.
 
+## Dos maneras de compilar y ejecutar este proyecto:
+
+### Con JDK
+
+Prerrequisitos:
+
+Este proyecto se puede compilar y ejecutar si se tiene instalado JDK (Java Development Kit) versión 17 o superior.
+
+Cómo compilar y ejecutar:
+
+Puedes compilar y ejecutar el programa directamente desde la terminal usando los comandos `javac` y `java`.
+
+**Asegúrate de estar en el directorio raíz del proyecto (`Proyecto02_SQLazo/`) antes de ejecutar los siguientes comandos.**
+
+1.  Compilación
+
+El siguiente comando compilará todos los archivos `.java` que se encuentran en el directorio `src/` y dejará los archivos `.class` compilados en un nuevo directorio llamado `out/`.
+
+```bash
+javac -d out -sourcepath src src\mx\unam\ciencias\myp\butchery\Main.java
+```
+
+  * **`javac`**: Es el compilador de Java.
+  * **`-d out`**: Le indica al compilador que coloque los archivos compilados (`.class`) en una carpeta llamada `out`.
+  * **`src/main/java/mx/unam/ciencias/butchery/**/*.java`**: Indica la ruta donde se encuentran los archivos `.java` a compilar.
+
+<!-- end list -->
+
+2.  Ejecución
+
+Una vez compilado, puedes ejecutar el programa con el siguiente comando (asumiendo que tu clase principal se llama `App` en el paquete raíz `mx.unam.ciencias.butchery`):
+
+```bash
+java -cp out mx.unam.ciencias.myp.butchery.Main
+```
+
+  * **`java`**: Es la Máquina Virtual de Java (JVM) que ejecuta el código.
+  * **`-cp out`** (`-cp` es una abreviatura de `--class-path`): Le indica a la JVM que busque los archivos `.class` en el directorio `out`.
+  * **`mx.unam.ciencias.butchery.Main`**: Es el nombre completamente calificado de la clase que contiene el método `main` que queremos ejecutar.
+
+### Con Docker
+
+Prerrequisitos:
+
+Para ejecutar el programa de java con Docker es necesario tener instalado Docker Desktop y tener abierta la aplicación en todo momento.
+Este es el link para instalarlo en Ubuntu: [https://docs.docker.com/desktop/setup/install/linux/ubuntu/](https://docs.docker.com/desktop/setup/install/linux/ubuntu/)
+Este es el link para instalarlo en Windows: [https://docs.docker.com/desktop/windows/install/](https://docs.docker.com/desktop/windows/install/)
+Este es el link para instalarlo en Mac: [https://docs.docker.com/desktop/mac/install/](https://docs.docker.com/desktop/mac/install/)
+
+Cómo compilar y ejecutar:
+
+
+
+
+1.  Descargar la imagen
+
+El comando para descargar la imagen estando en el directorio raíz de la práctica es el siguiente:
+
+```bash
+docker build -t butchery .
+```
+
+  * **`docker build`**: Indica a Docker que debe construir una imagen en base al `Dockerfile` que se encuentra en la raíz de la práctica.
+  * **`-t butchery`**: Etiqueta la imagen con el nombre `pumabank` para no tener que usar un ID predeterminado.
+  * **`.`**: Indica a Docker que los archivos a copiar y el `Dockerfile` se encuentran en el directorio actual.
+
+<!-- end list -->
+
+2.  Ejecutar el contenedor
+
+Este comando ejecuta un contenedor basado en la imagen que construimos en el paso anterior:
+
+```bash
+docker run --rm -it butchery
+```
+
+  * **`docker run`**: Da la instrucción a Docker de crear y ejecutar un contenedor.
+  * **`bitchery`**: El nombre de la imagen en la que se basa el contenedor.
+  * **`--rm`**: Borra el contenedor al terminar de ejecutarlo.
+  * **`-it`**: Indica que el contenedor debe ser interactivo para que podamos interactuar con el programa en tiempo real.
+
+### Con Maven
+
+Prerrequisitos:
+
+Este proyecto también se puede gestionar con Apache Maven. Debes tener **Maven instalado** en tu sistema para usar estos comandos.
+
+Cómo limpiar y probar el proyecto:
+
+Puedes usar Maven para limpiar los archivos compilados (`.class`) y para ejecutar la suite de pruebas automatizadas.
+
+**Asegúrate de estar en el directorio raíz del proyecto (`Proyecto02_SQLazo/`) donde se encuentra el archivo `pom.xml`.**
+
+1.   Limpiar el proyecto
+
+El siguiente comando eliminará el directorio `target/` (donde Maven guarda los archivos compilados y los artefactos).
+
+```bash
+mvn clean
+```
+
+2.   Ejecutar las pruebas
+
+Este comando compilará el código y ejecutará todas las pruebas unitarias que se encuentran en `src/test/java/`.
+
+```bash
+mvn test
+```
+
 ## Problemática a resolver:
 
 El dueño de una carnicería considera que sus empleados necesitan llevar un registro de las siguientes cosas:
@@ -75,7 +184,15 @@ Las clases relacionadas con este patrón son: ProductFactory, ProductByWeight y 
 
 La razón de utilizar el patrón Singleton es que solamente se pueda tener una única instancia del inventario durante la ejecución. Evita inventarios paralelos y estados inconsistentes cuando varias partes del sistema lo consultan. Tiene un constructor privado y un método getInstance() público que nos garantiza una única instancia del inventario.
 
-Las clases relacionadas con este patrón son: Inventory.
+**Integración con la base de datos SQLite:**
+
+Este patrón es fundamental para gestionar la persistencia de datos con SQLite. La clase `Inventory`, al ser un Singleton, se convierte en el **único punto de control** tanto para el estado del inventario en memoria como para su representación en la base de datos.
+
+*   **Carga Inicial**: Cuando la aplicación arranca y se solicita la instancia de `Inventory` por primera vez a través de `getInstance()`, esta se encarga de cargar todos los productos desde la base de datos SQLite a la memoria. Esto asegura que el estado de la aplicación refleje los datos guardados de sesiones anteriores.
+*   **Consistencia de Datos**: Cualquier modificación en el inventario (agregar un producto, actualizar el stock, cambiar un precio) se realiza a través de la única instancia de `Inventory`. Esta clase se responsabiliza de ejecutar la operación correspondiente (INSERT, UPDATE, DELETE) en la base de datos, garantizando que el estado en memoria y el estado persistente estén siempre sincronizados.
+*   **Ventajas de SQLite**: Se eligió SQLite por ser una base de datos ligera, sin servidor y basada en un único archivo (`butchery.db`). Esto simplifica enormemente la configuración y el despliegue de la aplicación, ya que no requiere un servicio de base de datos externo y es ideal para aplicaciones de escritorio como esta. El Singleton `Inventory` encapsula toda la interacción con este archivo, ocultando los detalles de la base de datos del resto de la aplicación.
+
+Las clases relacionadas con este patrón son: `Inventory`.
 
 ### Observer
 
