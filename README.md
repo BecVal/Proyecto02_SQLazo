@@ -1,17 +1,17 @@
 # Proyecto 02: Butchery Manager
 
-## Equipo: SQLazo
+## 👥 Equipo: SQLazo
 
 * [César Becerra Valencia (322064287)](#César)
 * [Victor Abraham Sánchez Morgado (322606003)](#Victor)
 * [José Luis Cortes Nava (322115437)](#Luis)
 
-## Breve descripción:
+## 📝 Breve descripción:
 
 Consiste en una consola para registro de ventas, control de inventario, manejo de impuestos y cálculo de precios de una carnicería.
 Los patrones de diseño trabajados en esta práctica son: **State, Strategy, Observer, MVC, Singleton y Factory**.
 
-## Dos maneras de compilar y ejecutar este proyecto:
+## 🚀 Cómo Compilar y Ejecutar
 
 ### Con JDK
 
@@ -120,7 +120,7 @@ Este comando compilará el código y ejecutará todas las pruebas unitarias que 
 mvn test
 ```
 
-## Problemática a resolver:
+## 🎯 Problemática a resolver:
 
 El dueño de una carnicería considera que sus empleados necesitan llevar un registro de las siguientes cosas:
 
@@ -154,13 +154,13 @@ La interfaz del sistema debe proveer al trabajador de la carnicería un menú co
 
 También, el dueño de la carnicería solicita que el sistema utilice persistencia de datos para que no se tenga que rellenar el inventario de nuevo cada vez que se vuelva a utilizar el programa, por lo que pide que se utilicen bases de datos para guardar los productos en el inventario. Por último, se pide que todos los cambios realizados en el inventario queden descritos en un archivo txt.
 
-## Patrones de diseño a utilizar:
+## 🎨 Patrones de diseño utilizados:
 
 ### MVC
 
 Utilizamos MVC para separar la lógica del negocio y la presentación, lo cual nos permitiría cambiar de interfaz sin tener que cambiar el modelo (aumenta la extensibilidad de nuestro código). Los menús de consola y las validaciones de entradas no afectan la lógica interna de nuestro negocio gracias a este patrón. Los casos de uso como consultar el inventario o la venta de un producto se ven manejados por el apartado de Model. ConsoleView no conoce Inventory ni Sale, solo llama al Controller. ButcheryController solo usa el modelo y nunca habla directo con la vista.
 
-Las clases relacionadas con este patrón son: ConsoleView, ButcheryController y ModelFacade.
+Las clases relacionadas con este patrón son: `ConsoleView`, `ButcheryController` y `ModelFacade`.
 
 ### Strategy
 
@@ -172,13 +172,13 @@ Lo utilizamos para intercambiar modelos de descuento en tiempo de ejecución par
 
 Este patrón nos permite modificar el precio de un producto en proceso de ser vendido dependiendo de si el cliente gusta utilizar un descuento.
 
-Las clases relacionadas con este patrón son: NoDiscount, FrequentCustomerDiscount y PercentageDiscount.
+Las clases relacionadas con este patrón son: `NoDiscount`, `FrequentCustomerDiscount` y `PercentageDiscount`.
 
 ### Factory
 
 Su propósito es encapsular la lógica de construcción de productos por peso o por unidad. Así el Controller no necesita conocer detalles de cada subtipo de producto. Gracias a este patrón podemos construir cualquier cantidad de productos que deseemos con una forma de medida dinámica, es decir, se pueden medir con respecto a su peso, por unidad, o se puede extender el código a que se utilice otro tipo de medida.
 
-Las clases relacionadas con este patrón son: ProductFactory, ProductByWeight y ProductByUnit.
+Las clases relacionadas con este patrón son: `ProductFactory`, `ProductByWeight` y `ProductByUnit`.
 
 ### Singleton
 
@@ -198,10 +198,11 @@ Las clases relacionadas con este patrón son: `Inventory`.
 
 El objetivo de usar Observer es notificar a aquellos interesados cuando cambie el inventario, sin tener que acoplar la clase Inventory a salidas concretas. Gracias a este patrón de diseño podemos hacer que se guarden en un archivo los cambios realizados en el inventario y que a la vez se impriman en consola.
 
-Las clases relacionadas con este patrón son: FileNotifier, ListNotifier y ConsoleNotifier.
+Las clases relacionadas con este patrón son: `FileNotifier`, `ListNotifier` y `ConsoleNotifier`.
 
 ### State
 
 Utilizamos el patrón State en especial para evitar usos incorrectos del sistema. Con esto evitamos condicionales y acciones como intentar cancelar una venta después de que haya sido pagada, lo cual no debería suceder. Cada estado tiene una cantidad fija de acciones que se pueden cumplir en ese instante, el resto regresan mensajes que indican que no se puede realizar esa acción concreta en ese estado. La importancia de este patrón está en que únicamente se puede cambiar internamente el estado del objeto en tiempo de ejecución (no se puede escoger en qué estado se encuentra); a diferencia del patrón Strategy, con el que buscamos que se pueda escoger el tipo de descuento a aplicar.
 
-Las clases relacionadas con este patrón son: PendingState, PaidState y CanceledState.
+Las clases relacionadas con este patrón son: `PendingState`, `PaidState` y `CanceledState`.
+
